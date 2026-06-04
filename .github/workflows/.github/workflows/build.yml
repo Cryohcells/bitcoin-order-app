@@ -1,0 +1,37 @@
+name: Bitcoin order App
+
+on:
+  push:
+    branches:
+      - githubcicd
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --force
+
+      - name: Build application
+        run: npm run build -- --base-href=/bitcoin-order-app/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.WORKSHOP6_GITHUB_TOKEN }}
+          publish_dir: ./dist/bitcoin
+          publish_branch: gh-pages
