@@ -4,7 +4,7 @@ docker pull zaproxy/zap-stable
 
 docker run --rm -v "${GITHUB_WORKSPACE}:/zap/wrk/:rw" -t zaproxy/zap-stable \
   zap-baseline.py -t "https://kenken64.github.io/bitcoin-order-app/" \
-  -r zap_baseline_report.html -l PASS
+  -r /zap/wrk/zap_baseline_report.html -I
 
 if [ ! -f "${GITHUB_WORKSPACE}/zap_baseline_report.html" ]; then
   echo "ZAP report was not generated."
